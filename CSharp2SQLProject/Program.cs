@@ -20,8 +20,30 @@ namespace CSharp2SQLProject {
 
             }
 
-            var sql = "Select * from Customers;";
-            var cmd = new SqlCommand(sql, connection);
+            var sql = "Select * from Customers Where State = 'OH';";
+            var cmd = new SqlCommand(sql, connection);//Command to include the Select Statement and the connection
+            var reader = cmd.ExecuteReader();//var reader represents the Results Set which reviews each row and column
+            while (reader.Read()) {
+                var id = (int)reader["Id"];
+                //tells it to read the Id column.  CAST the result to an '(int)' so that is returns an int, not an object
+                var name = reader["Name"].ToString();//add the "ToString" so that it returns a string instead of an object
+                var city = reader["City"].ToString();
+                var state = reader["State"].ToString();
+                var active = (bool)reader["Active"];
+                var code = reader.IsDBNull(reader.GetOrdinal("Code"))
+                    ? null
+                    : reader["Code"].ToString();
+
+                Console.WriteLine($"Customer: {name}");
+            }
+            
+
+                //Ternary Operator: the IsDBNull is bool;  "GetOrdinal"
+
+                Console.WriteLine("Done...");
+                reader.Close();
+            
+
 
 
 
